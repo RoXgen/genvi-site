@@ -18,7 +18,7 @@ body.idle,body.idle *{cursor:none}
 </style>
 </head>
 <body>
-<video id="v" src="carte-ecran.mp4?v=20261013" poster="poster.jpg" autoplay muted loop playsinline preload="auto"></video>
+<video id="v" src="carte-ecran.mp4?v=20261014" poster="poster.jpg" autoplay muted loop playsinline preload="auto"></video>
 <button id="go" type="button" autofocus><span class="b">&#9654; Afficher la carte</span><span class="h">Appuie sur OK pour passer en plein écran</span></button>
 <script>
 (function () {
@@ -71,7 +71,7 @@ body.idle,body.idle *{cursor:none}
   document.addEventListener('mousemove', wake); wake();
 
   // Nouvelle carte publiée ? (version.txt) : la vidéo est remplacée sans recharger la page, le plein écran reste actif
-  var version = '20261013';
+  var version = '20261014';
   function checkVersion() {
     if (!window.fetch) { return; }
     fetch('version.txt?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (txt) {
