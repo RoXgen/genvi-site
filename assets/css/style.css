@@ -28,7 +28,7 @@
 }
 
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{
   margin:0;font-family:var(--body);color:var(--green);background:var(--cream);
@@ -236,6 +236,10 @@ html:not(.js) .build__dots,html.reduced .build__dots,html:not(.js) .build__num,h
 .size__price{font-family:var(--display);font-size:28px;color:var(--orange);white-space:nowrap;transition:color .4s}
 .size p{font-size:15px}
 .sizes__note{margin-top:16px;font-size:14px}
+a.size{display:block;color:inherit;text-decoration:none}
+a.size:focus-visible{outline:3px solid var(--orange);outline-offset:4px}
+.size__cta{display:inline-flex;align-items:center;gap:6px;margin-top:12px;min-height:24px;font-weight:700;font-size:15px;color:var(--orange);transition:color .4s}
+.size:hover .size__cta{color:var(--mint)}
 
 /* ---------- Créations ---------- */
 .creations{background:var(--mint);padding:96px 0 72px;overflow:hidden}
@@ -306,6 +310,10 @@ html:not(.js) .build__dots,html.reduced .build__dots,html:not(.js) .build__num,h
 .menu__price{font-family:var(--display);font-size:18px;color:var(--orange);white-space:nowrap}
 .menu__desc{font-size:14px;margin-top:2px}
 .menu__note{font-size:13px;font-weight:600}
+.menu__boost{background:var(--cream);border-radius:18px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.menu__boost-title{font-family:var(--display);font-size:16px;line-height:1.2;text-transform:uppercase;color:var(--orange)}
+.menu__boost p{font-size:14px}
+.menu__boost .menu__boost-note{font-size:12.5px;opacity:.85}
 .extra .drinks{margin-top:28px}
 
 /* ---------- Fidélité ---------- */
@@ -317,6 +325,9 @@ html:not(.js) .build__dots,html.reduced .build__dots,html:not(.js) .build__num,h
 .loyalty__big.is-in .promo__num{animation:numSwing 1.2s var(--ease-spring) .3s}
 .loyalty__actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;margin-top:26px}
 .loyalty__link{color:#fff;font-weight:600;min-height:44px;display:inline-flex;align-items:center}
+.loyalty__student{margin-top:18px;max-width:560px;background:var(--cream);color:var(--green);border-radius:20px;padding:14px 18px;font-size:16px;line-height:1.45;box-shadow:0 12px 28px rgba(0,0,0,.12)}
+.loyalty__student strong{color:var(--orange)}
+.loyalty__note{margin-top:14px;font-size:13px;opacity:.9}
 .rewards{list-style:none;margin:0;padding:0;display:grid;gap:14px}
 .reward{display:flex;align-items:center;gap:18px;background:var(--cream);color:var(--green);border-radius:24px;padding:16px 20px}
 .reward__pts{flex:none;width:88px;height:88px;border-radius:20px;background:var(--green);color:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--display);font-size:28px;line-height:1}
@@ -340,6 +351,7 @@ html:not(.js) .build__dots,html.reduced .build__dots,html:not(.js) .build__num,h
 .order{border:2px solid var(--mint);border-radius:24px;padding:22px 24px;display:flex;flex-direction:column;gap:6px}
 .order__title{font-family:var(--display);font-size:20px;text-transform:uppercase}
 .order p{font-size:15px}
+.order__btn{align-self:flex-start;margin-top:10px}
 
 /* ---------- Footer ---------- */
 .foot{background:var(--green-deep);color:var(--cream);padding:48px 0}
