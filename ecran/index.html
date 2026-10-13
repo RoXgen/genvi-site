@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>GENVI — Carte écran</title>
+<link rel="icon" href="../assets/img/favicon-32.png">
+<style>
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+video{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#000}
+#go{position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2vh;
+  background:rgba(10,30,21,.55);border:0;margin:0;padding:0;color:#F2ECDF;cursor:pointer;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+#go .b{background:#C2571A;color:#F2ECDF;font-weight:700;font-size:4.2vw;line-height:1;padding:2.4vw 4.6vw;border-radius:999px;box-shadow:0 1.5vw 3vw rgba(0,0,0,.35)}
+#go .h{font-size:1.9vw;opacity:.9}
+#go.off{display:none}
+body.idle,body.idle *{cursor:none}
+</style>
+</head>
+<body>
+<video id="v" src="carte-ecran.mp4?v=20261013" poster="poster.jpg" autoplay muted loop playsinline preload="auto"></video>
+<button id="go" type="button" autofocus><span class="b">&#9654; Afficher la carte</span><span class="h">Appuie sur OK pour passer en plein écran</span></button>
+<script>
+(function () {
+  var v = document.getElementById('v');
+  var go = document.getElementById('go');
+
+  function play() {
+    v.muted = true;
+    var p = v.play();
+    if (p && p.catch) { p.catch(function () { go.className = ''; }); }
+  }
+  function fullscreen() {
+    var el = document.documentElement;
+    var fn = el.requestFullscreen || el.webkitRequestFullscreen || el.webkitRequestFullScreen || el.msRequestFullscreen;
+    if (fn) { try { var r = fn.call(el); if (r && r.catch) { r.catch(function () {}); } } catch (e) {} }
+  }
+  function isFull() {
+    return !!(document.fullscreenElement || document.webkitFullscreenElement || document.webkitCurrentFullScreenElement);
+  }
+  function start() { fullscreen(); play(); go.className = 'off'; keepAwake(); }
+
+  go.addEventListener('click', start);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.keyCode === 13) { start(); }
+  });
+  // Sortie du plein écran (touche Retour) : on réaffiche le bouton
+  ['fullscreenchange', 'webkitfullscreenchange'].forEach(function (ev) {
+    document.addEventListener(ev, function () { if (!isFull()) { go.className = ''; } });
+  });
+
+  // Relances automatiques si la vidéo s'arrête ou si le réseau coupe
+  v.addEventListener('pause', function () { setTimeout(play, 1500); });
+  v.addEventListener('error', function () { setTimeout(function () { v.load(); play(); }, 10000); });
+  v.addEventListener('stalled', function () { setTimeout(function () { if (v.readyState < 3) { v.load(); play(); } }, 15000); });
+
+  // Écran toujours allumé si le navigateur le permet
+  var lock = null;
+  function keepAwake() {
+    try {
+      if ('wakeLock' in navigator && !lock) {
+        navigator.wakeLock.request('screen').then(function (l) { lock = l; l.addEventListener('release', function () { lock = null; }); }).catch(function () {});
+      }
+    } catch (e) {}
+  }
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') { keepAwake(); play(); } });
+
+  // Curseur masqué après 3 s sans mouvement
+  var t;
+  function wake() { document.body.className = ''; clearTimeout(t); t = setTimeout(function () { document.body.className = 'idle'; }, 3000); }
+  document.addEventListener('mousemove', wake); wake();
+
+  // Nouvelle carte publiée ? (version.txt) : la vidéo est remplacée sans recharger la page, le plein écran reste actif
+  var version = '20261013';
+  function checkVersion() {
+    if (!window.fetch) { return; }
+    fetch('version.txt?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (txt) {
+      var nv = (txt || '').trim();
+      if (/^[0-9a-z-]{4,40}$/i.test(nv) && nv !== version) { version = nv; v.src = 'carte-ecran.mp4?v=' + nv; v.load(); play(); }
+    }).catch(function () {});
+  }
+  setInterval(checkVersion, 30 * 60 * 1000);
+
+  play();
+  try { go.focus(); } catch (e) {}
+})();
+</script>
+</body>
+</html>
