@@ -32,7 +32,7 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{
   margin:0;font-family:var(--body);color:var(--green);background:var(--cream);
-  line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  line-height:1.6;overflow-x:clip;-webkit-font-smoothing:antialiased;
 }
 body.is-locked{overflow:hidden}
 img{max-width:100%;height:auto;display:block}
