@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://genvi.fr/sitemap.xml
